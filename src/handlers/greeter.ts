@@ -1,27 +1,17 @@
-import * as grpc from "grpc";
-
 import { HelloResponse } from "../proto/greeter/greeter_pb";
-import {
-  GreeterService,
-  IGreeterServer
-} from "../proto/greeter/greeter_grpc_pb";
-import { Empty } from "google-protobuf/google/protobuf/empty_pb";
+import { GreeterService } from "../proto/greeter/greeter_grpc_pb";
 
-class GreeterHandler implements IGreeterServer {
+class GreeterHandler {
   /**
    * Greet the user nicely
    * @param call
-   * @param callback
    */
-  sayHello = (
-    call: grpc.ServerUnaryCall<Empty>,
-    callback: grpc.sendUnaryData<HelloResponse>
-  ): void => {
+  sayHello = (call: any): void => {
     const reply: HelloResponse = new HelloResponse();
 
-    reply.setMessage(`Hello World. This is a gRPC Service`);
+    reply.setMessage(`Hello world returned from gRPC bidirectional service`);
 
-    callback(null, reply);
+    call.write(reply);
   };
 }
 

@@ -12,12 +12,12 @@ interface IGreeterService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
     sayHello: IGreeterService_ISayHello;
 }
 
-interface IGreeterService_ISayHello extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, greeter_pb.HelloResponse> {
+interface IGreeterService_ISayHello extends grpc.MethodDefinition<greeter_pb.HelloRequest, greeter_pb.HelloResponse> {
     path: string; // "/greeter.Greeter/SayHello"
-    requestStream: boolean; // false
-    responseStream: boolean; // false
-    requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
-    requestDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+    requestStream: boolean; // true
+    responseStream: boolean; // true
+    requestSerialize: grpc.serialize<greeter_pb.HelloRequest>;
+    requestDeserialize: grpc.deserialize<greeter_pb.HelloRequest>;
     responseSerialize: grpc.serialize<greeter_pb.HelloResponse>;
     responseDeserialize: grpc.deserialize<greeter_pb.HelloResponse>;
 }
@@ -25,18 +25,17 @@ interface IGreeterService_ISayHello extends grpc.MethodDefinition<google_protobu
 export const GreeterService: IGreeterService;
 
 export interface IGreeterServer {
-    sayHello: grpc.handleUnaryCall<google_protobuf_empty_pb.Empty, greeter_pb.HelloResponse>;
+    sayHello: grpc.handleBidiStreamingCall<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
 }
 
 export interface IGreeterClient {
-    sayHello(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
-    sayHello(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
-    sayHello(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
+    sayHello(): grpc.ClientDuplexStream<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
+    sayHello(options: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
+    sayHello(metadata: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
 }
 
 export class GreeterClient extends grpc.Client implements IGreeterClient {
     constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
-    public sayHello(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
-    public sayHello(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
-    public sayHello(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: greeter_pb.HelloResponse) => void): grpc.ClientUnaryCall;
+    public sayHello(options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
+    public sayHello(metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<greeter_pb.HelloRequest, greeter_pb.HelloResponse>;
 }

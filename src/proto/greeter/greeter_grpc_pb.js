@@ -5,15 +5,15 @@ var grpc = require('grpc');
 var greeter_pb = require('./greeter_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
 
-function serialize_google_protobuf_Empty(arg) {
-  if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
-    throw new Error('Expected argument of type google.protobuf.Empty');
+function serialize_greeter_HelloRequest(arg) {
+  if (!(arg instanceof greeter_pb.HelloRequest)) {
+    throw new Error('Expected argument of type greeter.HelloRequest');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_google_protobuf_Empty(buffer_arg) {
-  return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_greeter_HelloRequest(buffer_arg) {
+  return greeter_pb.HelloRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_greeter_HelloResponse(arg) {
@@ -33,12 +33,12 @@ var GreeterService = exports.GreeterService = {
   // Sends a greeting
 sayHello: {
     path: '/greeter.Greeter/SayHello',
-    requestStream: false,
-    responseStream: false,
-    requestType: google_protobuf_empty_pb.Empty,
+    requestStream: true,
+    responseStream: true,
+    requestType: greeter_pb.HelloRequest,
     responseType: greeter_pb.HelloResponse,
-    requestSerialize: serialize_google_protobuf_Empty,
-    requestDeserialize: deserialize_google_protobuf_Empty,
+    requestSerialize: serialize_greeter_HelloRequest,
+    requestDeserialize: deserialize_greeter_HelloRequest,
     responseSerialize: serialize_greeter_HelloResponse,
     responseDeserialize: deserialize_greeter_HelloResponse,
   },
